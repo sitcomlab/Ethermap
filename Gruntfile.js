@@ -49,14 +49,14 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        tasks: [],
         options: {
           livereload: true
         }
       },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'karma']
+        tasks: ['karma']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -82,34 +82,11 @@ module.exports = function(grunt) {
           'server.js',
           'lib/**/*.{js,json}'
         ],
-        tasks: ['newer:jshint:server', 'express:dev', 'wait'],
+        tasks: ['express:dev', 'wait'],
         options: {
           livereload: true,
           nospawn: true //Without this option specified express won't be reloaded
         }
-      }
-    },
-
-    // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      server: {
-        options: {
-          jshintrc: 'lib/.jshintrc'
-        },
-        src: ['lib/{,*/}*.js']
-      },
-      all: [
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ],
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/spec/{,*/}*.js']
       }
     },
 
@@ -137,7 +114,6 @@ module.exports = function(grunt) {
         }]
       },
       server: '.tmp',
-      docs: '.doc'
     },
 
     // Add vendor prefixed styles
@@ -156,11 +132,11 @@ module.exports = function(grunt) {
     },
 
     // Automatically inject Bower components into the app
-    'bower-install': {
+    wiredep: {
       app: {
-        html: '<%= yeoman.app %>/views/index.html',
-        ignorePath: '<%= yeoman.app %>/'
-      }
+        src: ['<%= yeoman.app %>/views/index.html'],
+        options: { ignorePath: '../' },
+      },
     },
 
     // Renames files for browser caching purposes
@@ -250,13 +226,6 @@ module.exports = function(grunt) {
           src: '*.js',
           dest: '.tmp/concat/scripts'
         }]
-      }
-    },
-
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/views/*.html']
       }
     },
 
@@ -408,7 +377,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'bower-install',
+      'wiredep',
       'concurrent:server',
       'autoprefixer',
       'express:dev',
@@ -431,29 +400,20 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'bower-install',
+    'wiredep',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
     'ngmin',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'uglify',
     'rev',
     'usemin'
   ]);
 
-  grunt.registerTask('docs', ['clean:docs', 'jsdoc']);
-
-  grunt.registerTask('heroku', function() {
-    grunt.log.warn('The `heroku` task has been deprecated. Use `grunt build` to build for deployment.');
-    grunt.task.run(['build']);
-  });
-
   grunt.registerTask('default', [
-    'newer:jshint',
     'test',
     'build'
   ]);
