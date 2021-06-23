@@ -63,15 +63,14 @@ NODE_ENV=production forever -o out.log -e err.log start dist/server.js
 
 ```
 
-##### or with Docker and fig
+##### or with Docker 
 
 It may be necessary to rename the folder `Ethermap` to `ethermap` (note the lower case e), as Docker cannot create things with uppercase names.
 
 ```
-sudo fig up
+docker-compose up
 ```
 Ethermap will be available from http://localhost:8080
-
 
 ### Testing
 
