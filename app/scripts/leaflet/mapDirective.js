@@ -76,7 +76,6 @@ angular.module('CollaborativeMap')
         link: function postLink($scope) {
 
           //expose map for debugging purposes
-          //var map = window._map = L.mapbox.map('map', 'dnns.h8dkb1bh');
           var map = window._map = L.mapbox.map('map')
             .setView([51.95577098349905, 7.635455131530762], 14);
 
@@ -89,8 +88,14 @@ angular.module('CollaborativeMap')
               attribution: '&copy; ' + mapLink + ', ' + wholink
             });
 
-          //var osm = L.tileLayer('http://{s}.tiles.mapbox.com/v3/dnns.tm2-basemap/{z}/{x}/{y}.png').addTo(map);
-          var osm = L.mapbox.tileLayer('dnns.tm2-basemap').addTo(map);
+          const osm = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+            tileSize: 512,
+            maxZoom: 18,
+            zoomOffset: -1,
+            id: 'mapbox/streets-v11',
+            accessToken: 'pk.eyJ1Ijoic2l0Y29tbGFiIiwiYSI6ImNqNjd4a3pkdTA5ZmkyemxzNjBvZWQ0ZGcifQ.ctIXrv-GP4kWn7uMdt4yPQ'
+          }).addTo(map);
 
           L.control.layers({
             'Aerial': aerial,
