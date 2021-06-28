@@ -1,21 +1,39 @@
-FROM dockerfile/nodejs-bower-grunt
+FROM node:16-alpine as build
 
-WORKDIR /app
+# build dependencies for imagemin-gifsicle
+RUN apk --update --no-cache \
+		add  \
+		automake \
+		git \
+		alpine-sdk  \
+		nasm  \
+		autoconf  \
+		build-base \
+		zlib \
+		zlib-dev \
+		libpng \
+		libpng-dev\
+		libwebp \
+		libwebp-dev \
+		libjpeg-turbo \
+		libjpeg-turbo-dev
 
-# Set instructions on build.
-ADD package.json /app/
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json ./
+RUN npm install && npm rebuild
+COPY bower.json .bowerrc ./
+RUN npm exec bower install --allow-root
+COPY . ./
+RUN npm run build
+
+
+FROM node:16-alpine
+ENV NODE_ENV=production
+ENV PORT=8080
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/dist /usr/src/app
+# this time, only install prod dependencies
 RUN npm install
-ADD .bowerrc /app/
-ADD bower.json /app/
-RUN bower install --allow-root
-ADD . /app
-RUN grunt build
-
-ENV PORT 8080
-ENV NODE_ENV production
-
-# Define default command.
-CMD ["npm", "start"]
-
-# Expose ports.
-EXPOSE 8080
+EXPOSE ${PORT}
+CMD [ "node", "server.js" ]
