@@ -11,6 +11,9 @@ services:
     environment:
       DB_PORT_5984_TCP_ADDR: admin:password@couchdb
       PORT: 8080
+      http_proxy: http://wwwproxy.uni-muenster.de:3128
+      https_proxy: http://wwwproxy.uni-muenster.de:3128
+      no_proxy: "couchdb,localhost,127.0.0.1,0.0.0.0,.wwu.de,.uni-muenster.de,.wwu.io,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16"
 
   couchdb:
     image: couchdb:3
