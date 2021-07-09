@@ -1,0 +1,14 @@
+[Unit]
+Wants=syslog.service
+
+[Service]
+Restart=always
+WorkingDirectory=/opt/ethermap
+ExecStart=/usr/local/bin/docker-compose up --build
+ExecStop=/usr/local/bin/docker-compose down
+User=ive
+Environment="http_proxy=http://wwwproxy.uni-muenster.de:3128" "https_proxy=http://wwwproxy.uni-muenster.de:3128" "no_proxy=localhost,127.0.0.1,0.0.0.0,.wwu.de,.uni-muenster.de,.wwu.io,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16"
+
+[Install]
+WantedBy=multi-user.target
+
