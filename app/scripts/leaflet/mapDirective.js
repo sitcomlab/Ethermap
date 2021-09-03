@@ -109,6 +109,8 @@ angular.module('CollaborativeMap')
           var drawnItems = window.drawnItems = new L.FeatureGroup();
           map.addLayer(drawnItems);
 
+          L.mapbox.accessToken = 'pk.eyJ1Ijoic2l0Y29tbGFiIiwiYSI6ImNqNjd4a3pkdTA5ZmkyemxzNjBvZWQ0ZGcifQ.ctIXrv-GP4kWn7uMdt4yPQ';
+
           // Initialise the draw control and pass it the FeatureGroup of editable layers
           var drawControl = window._drawControl = new L.Control.Draw({
             edit: false,
