@@ -104,7 +104,7 @@ angular.module('CollaborativeMap')
             position: 'topleft'
           }).addTo(map);
 
-          // map.infoControl.setPosition('bottomleft');
+          map.attributionControl.setPosition('bottomleft');
           // Initialise the FeatureGroup to store editable layers
           var drawnItems = window.drawnItems = new L.FeatureGroup();
           map.addLayer(drawnItems);
