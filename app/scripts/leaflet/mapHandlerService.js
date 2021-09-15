@@ -335,7 +335,7 @@ angular.module('CollaborativeMap')
             opacity: 1
           });
           bound.addTo(map);
-          map.fitBounds(bound, {
+          map.fitBounds(bound._bounds, {
             'paddingBottomRight': [300, 1],
             'paddingTopLeft': [1, 1]
           });

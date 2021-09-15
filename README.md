@@ -52,7 +52,7 @@ grunt serve
 
 ```
 
-### Run for Production
+### Run for Production (Linux)
 
 
 ```
@@ -63,7 +63,19 @@ NODE_ENV=production forever -o out.log -e err.log start dist/server.js
 
 ```
 
-##### or with Docker 
+### Run for Production (Windows)
+
+
+```
+npm install
+bower install
+grunt build
+set NODE_ENV=production
+forever -o out.log -e err.log start dist/server.js
+
+```
+
+##### or with Docker
 
 It may be necessary to rename the folder `Ethermap` to `ethermap` (note the lower case e), as Docker cannot create things with uppercase names.
 
